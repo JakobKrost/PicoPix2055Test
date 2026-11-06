@@ -1,0 +1,1 @@
+<resources><style name="Theme.PicoPix" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:fontFamily">sans</item><item name="android:colorAccent">#0067B8</item></style></resources>

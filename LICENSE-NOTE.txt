@@ -1,0 +1,3 @@
+Prototype source. No third-party source code is copied in this stage.
+The documented AM7xxx mode-switch byte sequence is used for interoperability.
+When frame-protocol code derived from libam7xxx or picopix-ppx2055-linux is incorporated, distribute the combined source under GPL-3.0-or-later and retain upstream notices.
