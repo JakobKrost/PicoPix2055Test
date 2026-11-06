@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="18dp" android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView android:text="PicoPix PPX2055 USB-Test" android:textSize="24sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/status" android:text="Beamer anschliessen und 'USB pruefen' antippen." android:layout_marginTop="12dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/scan" android:text="USB pruefen" android:layout_marginTop="12dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/switchMode" android:text="In Displaymodus umschalten" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/capture" android:text="Bildschirmfreigabe testen" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/log" android:typeface="monospace" android:textIsSelectable="true" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>
