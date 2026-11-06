@@ -27,34 +27,64 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Android SDK 35 installieren
-        run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
-
       - name: Debug-APK kompilieren
         run: gradle --no-daemon :app:assembleDebug
 
-      - name: APK-Datei anzeigen
+      - name: APK-Datei kontrollieren
         run: |
+          test -f app/build/outputs/apk/debug/app-debug.apk
           ls -lh app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Vorhandene Android Build Tools anzeigen
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          find "${ANDROID_HOME}/build-tools" -maxdepth 2 \
+            \( -name apksigner -o -name aapt \) \
+            -type f -print
 
       - name: APK-Signatur prüfen
         run: |
-          "${ANDROID_HOME}/build-tools/35.0.0/apksigner" verify \
+          APKSIGNER="$(find "${ANDROID_HOME}/build-tools" \
+            -name apksigner -type f | sort -V | tail -n 1)"
+
+          if [ -z "${APKSIGNER}" ]; then
+            echo "apksigner wurde nicht gefunden."
+            exit 1
+          fi
+
+          echo "Verwendet wird: ${APKSIGNER}"
+
+          "${APKSIGNER}" verify \
             --verbose \
             --print-certs \
             app/build/outputs/apk/debug/app-debug.apk
 
-      - name: APK-Paketinformationen prüfen
+      - name: APK-Paketinformationen anzeigen
         run: |
-          "${ANDROID_HOME}/build-tools/35.0.0/aapt" dump badging \
+          AAPT="$(find "${ANDROID_HOME}/build-tools" \
+            -name aapt -type f | sort -V | tail -n 1)"
+
+          if [ -z "${AAPT}" ]; then
+            echo "aapt wurde nicht gefunden."
+            exit 1
+          fi
+
+          echo "Verwendet wird: ${AAPT}"
+          "${AAPT}" dump badging \
             app/build/outputs/apk/debug/app-debug.apk
+
+      - name: SHA256-Prüfsumme erzeugen
+        run: |
+          cd app/build/outputs/apk/debug
+          sha256sum app-debug.apk > app-debug.apk.sha256
+          cat app-debug.apk.sha256
 
       - name: APK als Download bereitstellen
         uses: actions/upload-artifact@v4
         with:
           name: PicoPix2055-Test-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/debug/app-debug.apk.sha256
           if-no-files-found: error
           retention-days: 14
