@@ -1,0 +1,5 @@
+<resources>
+    <!-- AM7xxx mass-storage and display IDs documented by libam7xxx. -->
+    <usb-device vendor-id="7649" product-id="4353" />
+    <usb-device vendor-id="7649" product-id="49409" />
+</resources>
